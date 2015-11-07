@@ -3,19 +3,12 @@ h1, h2, h3, h4, h5, h6 {
   font-weight: bold;
 }
 
-/* Це коментар в CSS */
 .alert {
-  /* Ми додали відстань лише зверху елемента: -top */
   margin-top: 10px;
 }
 
-/* знайшли елемент футера по його унікальному ідентифікатору
-  footer */
 #footer {
-  /* задаємо верхню межу елемента: ширина лінії, тип лінії, колір
-    лінії */
   border-top: 1px solid #dddddd;
-  /* задаємо внутрішню відстань елемента до верхнього краю */
   padding-top: 10px;
 }
 
@@ -31,4 +24,27 @@ h1, h2, h3, h4, h5, h6 {
   height: 30px;
   line-height: 30px;
   color: #555555;
+}
+
+.addstudent {
+  margin-top: 20px;
+}
+
+input[type="checkbox"] {
+  background-image: repeating-linear-gradient(to bottom,#fff 0%,#CFCFCF 50%,#fff 100%);
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  border: 1px solid #999;
+  border-radius: 3px;
+  width: 12px;
+  height: 12px;
+}
+   
+input[type="checkbox"]:checked {
+  background-image: repeating-linear-gradient(to bottom,#fff 0%,#87CEFF 50%,#fff 100%);
+}
+
+.footer-edit {
+  padding-top: 20px;
+  background-color: #eee;
 }
