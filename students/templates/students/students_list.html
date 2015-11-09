@@ -31,9 +31,9 @@
     <div class="row" id="sub-header">
       <div class="col-xs-12">
         <ul class="nav nav-tabs" role="tablist">
-          <li role="presentation" class="active"><a href="#">Студенти</a></li>
-          <li role="presentation"><a href="visiting.html">Відвідування</a></li>
-          <li role="presentation"><a href="groups.html">Групи</a></li>
+          <li role="presentation" class="active"><a href="{% url "home" %}">Студенти</a></li>
+          <li role="presentation"><a href="/journal">Відвідування</a></li>
+          <li role="presentation"><a href="{% url "groups" %}">Групи</a></li>
         </ul>
       </div>
     </div>
@@ -47,7 +47,7 @@
       
         <div class="row">
           <div class="col-xs-3"><h2>База Студентів</h2></div>
-          <div class="col-xs-9"><a class="btn btn-primary addstudent" href="#">Додати Студента</a></div>
+          <div class="col-xs-9"><a class="btn btn-primary addstudent" href="{% url "students_add" %}">Додати Студента</a></div>
         </div>
 
 			  <!-- Start Students Listing -->
@@ -66,8 +66,8 @@
 				    <tr>
               <td>1</td>
               <td> <img src="./img/me.jpeg" height="30" width="30" class="img-circle" /></td>
-              <td> <a title="Редагувати" href="#">Корост</a> </td>
-              <td> <a title="Редагувати" href="#">Андрій</a> </td>
+              <td> <a title="Редагувати" href="{% url "students_edit" 1 %}">Корост</a> </td>
+              <td> <a title="Редагувати" href="{% url "students_edit" 1 %}">Андрій</a> </td>
               <td>2123</td>
               <td>
 					      <div class="dropdown">
@@ -75,9 +75,9 @@
 						        <span class="caret"></span>
 					        </button>
 					        <ul class="dropdown-menu" role="menu">
-						        <li role="presentation"><a role="menuitem" tabindex="-1" href="visiting.html">Відвідування</a></li>
-						        <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Редагувати</a></li>
-						        <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Видалити</a></li>
+                    <li> <a href="{% url "students_edit" 1 %}">Редагувати</a> </li>
+						        <li> <a href="/journal/1">Відвідування</a> </li>
+						        <li> <a  href="{% url "students_delete" 1 %}">Видалити</a> </li>
 					        </ul>
 					      </div>
               </td>
@@ -85,8 +85,8 @@
             <tr>
               <td>2</td>
               <td> <img src="./img/podoba3.jpg" height="30" width="30" class="img-circle" /></td>
-              <td> <a title="Редагувати" href="edit.html">Подоба</a> </td>
-              <td> <a title="Редагувати" href="edit.html">Віталій</a> </td>
+              <td> <a title="Редагувати" href="{% url "students_edit" 2 %}">Подоба</a> </td>
+              <td> <a title="Редагувати" href="{% url "students_edit" 2 %}">Віталій</a> </td>
               <td>254</td>
               <td>
 					      <div class="dropdown">
@@ -94,9 +94,9 @@
 						        <span class="caret"></span>
 					        </button>
 					        <ul class="dropdown-menu" role="menu">
-						        <li role="presentation"><a role="menuitem" tabindex="-1" href="visiting.html">Відвідування</a></li>
-						        <li role="presentation"><a role="menuitem" tabindex="-1" href="edit.html">Редагувати</a></li>
-						        <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Видалити</a></li>
+                    <li> <a href="{% url "students_edit" 2 %}">Редагувати</a> </li>
+						        <li> <a href="/journal/2">Відвідування</a> </li>
+						        <li> <a href="{% url "students_delete" 2 %}">Видалити</a> </li>
 					        </ul>
 					      </div>
               </td>
@@ -104,8 +104,8 @@
             <tr>
               <td>3</td>
               <td> <img src="./img/piv.png" height="30" width="30" class="img-circle" /></td>
-              <td> <a title="Редагувати" href="#">Притула</a> </td>
-              <td> <a title="Редагувати" href="#">Тарас</a> </td>
+              <td> <a title="Редагувати" href="{% url "students_edit" 3 %}">Притула</a> </td>
+              <td> <a title="Редагувати" href="{% url "students_edit" 3 %}">Тарас</a> </td>
               <td>5332</td>
               <td>
 					      <div class="dropdown">
@@ -113,9 +113,9 @@
 						        <span class="caret"></span>
 					        </button>
 					        <ul class="dropdown-menu" role="menu">
-						        <li role="presentation"><a role="menuitem" tabindex="-1" href="visiting.html">Відвідування</a></li>
-						        <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Редагувати</a></li>
-						        <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Видалити</a></li>
+                    <li> <a href="{% url "students_edit" 3 %}">Редагувати</a> </li>
+						        <li> <a href="/journal/3">Відвідування</a> </li>
+						        <li> <a href="{% url "students_delete" 3 %}">Видалити</a> </li>
 					        </ul>
 					      </div>
               </td>
