@@ -7,7 +7,7 @@
   <title>Сервіс Обліку Студентів - {% block meta_title %}{% endblock meta_title %}</title>
   <meta name="description" value="Система Обліку Студентів Навчального Закладу" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/bootstrap/3.3.0/css/bootstrap.min.css">
-  <link rel="stylesheet" href="{% static "css/main.css" %}">
+  <link rel="stylesheet" href="{{ PORTAL_URL }}{% static "css/main.css" %}">
   
   {% block extra_css %}{% endblock extra_css %}
   
@@ -36,9 +36,11 @@
     <div class="row" id="sub-header">
       <div class="col-xs-12">
         <ul class="nav nav-tabs" role="tablist">
-          
-          {% block li-sub-header %}{% endblock li-sub-header %}
-          
+          {% url "home" as root_path %}
+          <li role="presentation" {% if request.path == root_path %}class="active"{% endif %}><a href="{% url "home" %}">Студенти</a></li>
+          <li role="presentation" {% if '/journal' in request.path %}class="active"{% endif %}><a href="/journal">Відвідування</a></li>
+          {% url "groups" as url_groups %}
+          <li role="presentation" {% if url_groups in request.path %}class="active"{% endif %}><a href="{% url "groups" %}">Групи</a></li>
         </ul>
       </div>
     </div>

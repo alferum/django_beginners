@@ -6,12 +6,6 @@
 
 {% block title %}База Студентів{% endblock title %}
 
-{% block li-sub-header %}
-<li role="presentation" class="active"> <a href="{% url "home" %}">Студенти</a> </li>
-<li role="presentation"> <a href="/journal">Відвідування</a> </li>
-<li role="presentation"> <a href="{% url "groups" %}">Групи</a> </li>
-{% endblock li-sub-header %}
-
 {% block content %}
 
 <a href="{% url "students_add" %}" class="btn btn-primary">Додати Студента</a>
