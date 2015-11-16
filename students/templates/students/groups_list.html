@@ -11,6 +11,7 @@
 <a href="{% url "groups_add" %}" class="btn btn-primary">Додати Групу</a>
 
 <!-- Start Listing -->
+{% if groups %}
 <table class="table table-hover table-striped">
   <thead>
     <tr>
@@ -33,8 +34,8 @@
           </button>
           <ul class="dropdown-menu" role="menu">
             <li> <a href="{% url "groups_edit" group.id %}">Редагувати</a> </li>
-            <li> <a href="/journal/{{ student.id }}">Відвідування</a> </li>
-            <li> <a  href="{% url "groups_delete" group.id %}">Видалити</a> </li>
+            <li> <a href="{% url "journal" %}">Відвідування</a> </li>
+            <li> <a href="{% url "groups_delete" group.id %}">Видалити</a> </li>
           </ul>
         </div>
       </td>
@@ -44,13 +45,8 @@
   </tbody>
 </table>
 <!-- End Listing -->
-    
-<nav>
-  <ul class="pagination">
-    <li><a href="#">1</a></li>
-    <li class="active"><a href="#">2</a></li>
-    <li><a href="#">Далі</a></li>
-  </ul>
-</nav>
+{% else %}
+ <p>Поки немає груп у базі</p>
+{% endif %}
 
 {% endblock content %}

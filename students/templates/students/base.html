@@ -25,8 +25,9 @@
         <strong>Група:</strong>
         <select>
           <option value="">Усі Студенти</option>
-          <option value="">МтМ - 21, Подоба Віталій (No 254)</option>
-          <option value="">МтМ - 22, Корост Андрій (No 2123)</option>
+          {% for group in groups_select %}
+            <option value="">{{ group.title }}, {{ group.leader }}</option>
+          {% endfor %}
         </select>
       </div>
     </div>
@@ -38,7 +39,8 @@
         <ul class="nav nav-tabs" role="tablist">
           {% url "home" as root_path %}
           <li role="presentation" {% if request.path == root_path %}class="active"{% endif %}><a href="{% url "home" %}">Студенти</a></li>
-          <li role="presentation" {% if '/journal' in request.path %}class="active"{% endif %}><a href="/journal">Відвідування</a></li>
+          {% url "journal" as url_journal %}
+          <li role="presentation" {% if url_journal in request.path %}class="active"{% endif %}><a href="{% url "journal" %}">Відвідування</a></li>
           {% url "groups" as url_groups %}
           <li role="presentation" {% if url_groups in request.path %}class="active"{% endif %}><a href="{% url "groups" %}">Групи</a></li>
         </ul>
@@ -55,6 +57,7 @@
         
           <h2>{% block title %}{% endblock title %}</h2>
           {% block content %}{% endblock content %}
+          {% include "students/pagination.html" %}
 
       </div>
     </div>
@@ -67,7 +70,7 @@
       </div>
     </div>
     <!-- End Footer -->
-    
+   
   </div>
   <!-- End Container -->
   

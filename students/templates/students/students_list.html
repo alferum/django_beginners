@@ -11,6 +11,7 @@
 <a href="{% url "students_add" %}" class="btn btn-primary">Додати Студента</a>
 
 <!-- Start Students Listing -->
+{% if students %}
 <table class="table table-hover table-striped">
   <thead>
     <tr>
@@ -37,8 +38,8 @@
           </button>
           <ul class="dropdown-menu" role="menu">
             <li> <a href="{% url "students_edit" student.id %}">Редагувати</a> </li>
-            <li> <a href="/journal/{{ student.id }}">Відвідування</a> </li>
-            <li> <a  href="{% url "students_delete" student.id %}">Видалити</a> </li>
+            <li> <a href="{% url "journal_edit" student.id %}">Відвідування</a> </li>
+            <li> <a href="{% url "students_delete" student.id %}">Видалити</a> </li>
           </ul>
         </div>
       </td>
@@ -48,17 +49,9 @@
   </tbody>
 </table>
 <!-- End Students Listing -->
-    
-<nav>
-  <ul class="pagination">
-    <li><a href="#">&laquo;</a></li>
-    <li><a href="#">1</a></li>
-    <li class="active"><a href="#">2</a></li>
-    <li><a href="#">3</a></li>
-    <li><a href="#">4</a></li>
-    <li><a href="#">5</a></li>
-    <li><a href="#">&raquo;</a></li>
-  </ul>
-</nav>
+{% else %}
+ <p>Поки немає студентів у базі</p>
+{% endif %}
 
 {% endblock content %}
+

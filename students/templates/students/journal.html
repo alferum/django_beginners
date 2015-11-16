@@ -1,0 +1,37 @@
+{% extends "students/base.html" %}
+
+{% load static from staticfiles %}
+
+{% block meta_title %}Відвідування{% endblock meta_title %}
+
+{% block title %}Облік відвідування{% endblock title %}
+
+{% block content %}
+
+<p class="text-center"><a href="#">&larr;</a><strong>Жовтень 2014</strong><a href="#">&rarr;</a></p>
+
+<!-- Start Listing -->
+<table class="table table-hover table-striped table-bordered">
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>Студент</th>
+      {% for day in days %}
+        <th>day</th>
+      {% endfor %}
+    </tr>
+  </thead>
+  <tbody>
+    {% for student in students %}
+    <tr>
+      <td>{{ forloop.counter }}</td>
+      <td>{{ student.s_name }}</td>
+      {% for day in days %}
+        <td> <input type="checkbox" /> </td>
+      {% endfor %}
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+{% endblock content %}
