@@ -9,29 +9,49 @@
 {% block content %}
 
 <p class="text-center"><a href="#">&larr;</a><strong>Жовтень 2014</strong><a href="#">&rarr;</a></p>
-
+{{ test }}
 <!-- Start Listing -->
+{% if journals %}
 <table class="table table-hover table-striped table-bordered">
   <thead>
     <tr>
       <th>#</th>
       <th>Студент</th>
-      {% for day in days %}
-        <th>day</th>
+      {% for date in dates %}
+        <th>{{ date }}</th>
       {% endfor %}
     </tr>
   </thead>
   <tbody>
-    {% for student in students %}
+    {% for journal, checks in journals %}
     <tr>
       <td>{{ forloop.counter }}</td>
-      <td>{{ student.s_name }}</td>
-      {% for day in days %}
-        <td> <input type="checkbox" /> </td>
+      <td>{{ journal.student_name }}</td>
+      {% for check in checks %}
+        <td> <input type="checkbox" {% if check %}checked{% endif %}/> </td>
       {% endfor %}
     </tr>
     {% endfor %}
   </tbody>
 </table>
+{% else %}
+ <p>Поки немає журналів у базі</p>
+{% endif %}
+
+{% if journals.has_other_pages %}
+<nav>
+  <ul class="pagination">
+    <li><a href="{% url "journal" %}?page=1">&laquo;</a></li>
+    {% for p in journals.paginator.page_range %}
+    <li {% if journals.number == p %}class="active"{% endif %}>
+      <a href="{% url "journal" %}?page={{ p }}">{{ p }}</a>
+    </li>
+    {% endfor %}
+    <li>
+      <a href="{% url "journal" %}?page={{ journals.paginator.num_pages}}">&raquo;</a>
+    </li>
+  </ul>
+</nav>
+{% endif %}
 
 {% endblock content %}

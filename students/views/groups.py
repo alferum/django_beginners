@@ -2,11 +2,9 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
-from ..models import Group
+from ..models.groups import Group
 
 def groups_list(request):
-    #groups = (
-    #    )
     groups = Group.objects.all()
     order_by = request.GET.get('order_by', '')
     if order_by in ('title', 'leader'):
