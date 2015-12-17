@@ -43,7 +43,7 @@
       <td>{{ forloop.counter }}</td>
       <td> <a title="Редагувати" href="{% url "groups_edit" group.id %}">{{ group.title }}</a> </td>
       <td>
-        {% if group.leader.id %}<a title="Редагувати" href="{% url "students_edit" group.leader.id %}">{{ group.leader }}</a>
+        {% if group.leader %}<a title="Редагувати" href="{% url "students_edit" group.leader.id %}">{{ group.leader }}</a>
         {% else %}Немає старости
         {% endif %}
       </td>
