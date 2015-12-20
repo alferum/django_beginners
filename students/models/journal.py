@@ -9,7 +9,7 @@ class Journal(models.Model):
         verbose_name = u"Журнал відвідування"
         verbose_name_plural = u"Журнали відвідування"
     
-    student_name = models.ForeignKey('Student', verbose_name=u"Студенти")
+    student_name = models.ForeignKey('Student', verbose_name=u"Студент")
     
     d1 = models.BooleanField(default=False, verbose_name = u'Ср 1')
     d2 = models.BooleanField(default=False, verbose_name = u'Чт 2')

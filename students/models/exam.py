@@ -8,6 +8,7 @@ class Exam(models.Model):
     class Meta(object):
         verbose_name = u"Іспит"
         verbose_name_plural = u"Іспити"
+        unique_together = (('title', 'exam_group'), ('date', 'teacher'))
         
     title = models.CharField(
         max_length=256,
@@ -28,5 +29,6 @@ class Exam(models.Model):
         verbose_name=u"Група",
         blank=False,
         null=True)
+        
     def __unicode__(self):
         return u"%s %s" % (self.exam_group.title, self.title)

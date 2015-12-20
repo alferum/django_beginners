@@ -35,6 +35,7 @@ urlpatterns = [
     url(r'^journal/(?P<sid>\d+)/edit/$', 'students.views.journal.journal_edit', name='journal_edit'),
     
     url(r'^exams/$', 'students.views.exams.exams_list', name='exams'),
+    url(r'^exam_results/$', 'students.views.exam_results.exam_results', name='exam_results'),
     
     url(r'^admin/', include(admin.site.urls)),
 ]

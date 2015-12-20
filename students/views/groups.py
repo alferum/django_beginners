@@ -7,7 +7,7 @@ from ..models.groups import Group
 def groups_list(request):
     groups = Group.objects.all()
     order_by = request.GET.get('order_by', '')
-    if order_by in ('title', 'leader'):
+    if order_by in ('title', 'leader__last_name'):
         groups = groups.order_by(order_by)
         if request.GET.get('reverse', '') == '1':
             groups = groups.reverse()
