@@ -49,7 +49,7 @@
   <tbody>
     {% for exam in exams %}
     <tr>
-      <td>{{ forloop.counter }}</td>
+      <td>{{ forloop.counter0|add:exams.start_index }}</td>
       <td>{{ exam.title }}</td>
       <td>{{ exam.date }}</td>
       <td>{{ exam.teacher }}</td>

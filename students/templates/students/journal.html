@@ -25,7 +25,7 @@
   <tbody>
     {% for journal, checks in journals %}
     <tr>
-      <td>{{ forloop.counter }}</td>
+      <td>{{ forloop.counter0|add:journals.start_index }}</td>
       <td>{{ journal.student_name }}</td>
       {% for check in checks %}
         <td> <input type="checkbox" {% if check %}checked{% endif %}/> </td>

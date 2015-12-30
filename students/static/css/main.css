@@ -48,3 +48,8 @@ input[type="checkbox"]:checked {
   padding-top: 20px;
   background-color: #eee;
 }
+
+/* Form Styles */
+textarea, select, input {
+  max-width: 300px;
+}

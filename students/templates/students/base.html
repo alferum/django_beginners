@@ -57,12 +57,13 @@
     <!-- Start Content Columns -->
     <div class="row" id="content-columns">
       <div class="col-xs-12" id="content-column">
-        {% comment "Not used alert so far" %}
-        <div class="alert alert-warning">Зміни скасовано.</div>
-        {% endcomment %}
         
-          <h2>{% block title %}{% endblock title %}</h2>
-          {% block content %}{% endblock content %}
+        {% if messages %}
+        <div class="alert alert-warning" role="alert">{% for message in messages %}{{ message }}<br />{% endfor %}</div>
+        {% endif %}
+
+        <h2>{% block title %}{% endblock title %}</h2>
+        {% block content %}{% endblock content %}
 
       </div>
     </div>
