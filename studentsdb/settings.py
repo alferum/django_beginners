@@ -39,8 +39,12 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'crispy_forms',
+    'contact_form',
     'students',
 )
+
+CRISPY_TEMPLATE_PACK = 'bootstrap3'
 
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -89,7 +93,7 @@ from db import DATABASES
 # Internationalization
 # https://docs.djangoproject.com/en/1.8/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'uk'
 
 TIME_ZONE = 'UTC'
 
@@ -109,3 +113,16 @@ MEDIA_ROOT = os.path.join(BASE_DIR, '..', 'media')
 
 TEMPLATE_CONTEXT_PROCESSORS = global_settings.TEMPLATE_CONTEXT_PROCESSORS + ("django.core.context_processors.request",
                                                                              "studentsdb.context_processors.students_proc",)
+
+# email settings please, set here you smtp server details and your admin email
+ADMIN_EMAIL = ''
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = '465'
+EMAIL_HOST_USER = ''
+EMAIL_HOST_PASSWORD = ''
+EMAIL_USE_TLS = False
+EMAIL_USE_SSL = True
+
+#ADMIN_EMAIL = 'django.core.mail.backends.console.EmailBackend'
+#EMAIL_HOST = 'localhost'
+#EMAIL_PORT = 1025
