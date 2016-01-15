@@ -41,7 +41,7 @@ class StudentCreateForm(ModelForm):
         self.helper.layout.append(FormActions(
             Div(css_class = self.helper.label_class),
             Submit('add_button', u'Зберегти', css_class="btn btn-primary"),
-            HTML(u"<a class='btn btn-link' name='cancel_button' href='{% url 'home' %}?status_message=Додавання студента скасовано!'>Скасувати</a>"),
+            HTML(u"<a class='btn btn-link' name='cancel_button' href='{% url 'home' %}?status_message=Додавання/редагування студента скасовано!'>Скасувати</a>"),
         ))
 
 class StudentUpdateForm(StudentCreateForm):
@@ -54,7 +54,6 @@ class StudentCreateView(CreateView):
     model = Student
     template_name = 'students/students_edit.html'
     form_class = StudentCreateForm
-    #success_url = 
     
     def get_success_url(self):
         messages.info(self.request, u'Студента %s %s успішно додано!' % (self.request.POST.get('first_name'), self.request.POST.get('last_name')))
