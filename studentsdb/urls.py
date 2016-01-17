@@ -19,6 +19,7 @@ from .settings import MEDIA_ROOT, DEBUG
 
 from students.views.students import StudentUpdateView, StudentDeleteView, StudentCreateView
 from students.views.groups import GroupCreateView, GroupUpdateView, GroupDeleteView
+from students.views.exams import ExamCreateView, ExamUpdateView, ExamDeleteView
 from students.views.contact_admin import ContactView
 
 urlpatterns = [
@@ -34,11 +35,16 @@ urlpatterns = [
     url(r'^groups/(?P<pk>\d+)/edit/$', GroupUpdateView.as_view(), name='groups_edit'),
     url(r'^groups/(?P<pk>\d+)/delete/$', GroupDeleteView.as_view(), name='groups_delete'),
     
-    #Journal urls
+    # Journal urls
     url(r'^journal/$', 'students.views.journal.journal', name='journal'),
     url(r'^journal/(?P<sid>\d+)/edit/$', 'students.views.journal.journal_edit', name='journal_edit'),
     
+    # Exam urls
     url(r'^exams/$', 'students.views.exams.exams_list', name='exams'),
+    url(r'^exams/add/$', ExamCreateView.as_view(), name='exams_add'),
+    url(r'^exams/(?P<pk>\d+)/edit/$', ExamUpdateView.as_view(), name='exams_edit'),
+    url(r'^exams/(?P<pk>\d+)/delete/$', ExamDeleteView.as_view(), name='exams_delete'),
+    
     url(r'^exam_results/$', 'students.views.exam_results.exam_results', name='exam_results'),
     
     # Contact Admin Form

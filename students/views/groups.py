@@ -41,6 +41,7 @@ class GroupCreateForm(ModelForm):
             Submit('add_button', u'Зберегти', css_class="btn btn-primary"),
             HTML(u"<a class='btn btn-link' name='cancel_button' href='{% url 'groups' %}?status_message=Додавання/редагування групи скасовано!'>Скасувати</a>"),
         ))
+        # blank field leader in form create group
         self.fields['leader'].queryset = self.fields['leader'].queryset.none()
 
 class GroupUpdateForm(GroupCreateForm):
@@ -48,7 +49,8 @@ class GroupUpdateForm(GroupCreateForm):
     def __init__(self, *args, **kwargs):
         super(GroupUpdateForm, self).__init__(*args, **kwargs)
         self.helper.form_action = reverse('groups_edit', kwargs = {'pk': kwargs['instance'].id})
-        self.fields['leader'].queryset = self.instance.student_set.all().order_by('last_name')
+        # filter students from current group
+        self.fields['leader'].queryset = self.instance.student_set.order_by('last_name')
         
 class GroupCreateView(CreateView):
     model = Group
@@ -56,7 +58,7 @@ class GroupCreateView(CreateView):
     form_class = GroupCreateForm
     
     def get_success_url(self):
-        messages.info(self.request, u'Групу %s успішно додано!' % self.object.title)
+        messages.success(self.request, u'Групу %s успішно додано!' % self.object.title)
         return reverse('groups')
 
 class GroupUpdateView(UpdateView):
@@ -66,14 +68,15 @@ class GroupUpdateView(UpdateView):
     
     def form_valid(self, form):
         leader = form.cleaned_data['leader']
-        if not leader or leader.student_group_id == form.instance.id:
+        #field blank or leader's group == current group
+        if not leader or leader.student_group == self.object:
             return super(GroupUpdateView, self).form_valid(form)
         else:
-            messages.error(self.request, u'Студент належить до іншої групи')
+            messages.error(self.request, u'Студент належить до іншої групи.')
             return super(GroupUpdateView, self).form_invalid(form)
 
     def get_success_url(self):
-        messages.info(self.request, u'Групу %s успішно збережено!' % self.object.title)
+        messages.success(self.request, u'Групу %s успішно збережено!' % self.object.title)
         return reverse('groups')
         
 class GroupDeleteView(DeleteView):
@@ -81,7 +84,9 @@ class GroupDeleteView(DeleteView):
     template_name = 'students/groups_confirm_delete.html'
     
     def delete(self, request, *args, **kwargs):
+        """Delete if group is empty"""
         group = self.get_object()
+        # if group is empty
         if group.student_set.exists():
             messages.error(self.request, u'Помилка. Група %s не порожня.' % group.title)
         else:

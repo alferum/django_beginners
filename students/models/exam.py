@@ -8,7 +8,7 @@ class Exam(models.Model):
     class Meta(object):
         verbose_name = u"Іспит"
         verbose_name_plural = u"Іспити"
-        unique_together = (('title', 'exam_group'), ('date', 'teacher'))
+        unique_together = (('title', 'exam_group'), ('date', 'teacher'), ('date', 'exam_group'))
         
     title = models.CharField(
         max_length=256,

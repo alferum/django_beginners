@@ -55,16 +55,12 @@ class ContactView(FormView):
         subject = form.cleaned_data['subject']
         message = form.cleaned_data['message']
         from_email = form.cleaned_data['from_email']
-        
         try:
             #send_mail(subject, message, from_email, [ADMIN_EMAIL])
-            pass
+            messages.success(self.request, u'Повідомлення успішно надіслано.')
         except Exception:
-            self.message = u'Під час відправки листа виникла непередбачувана помилка. Спробуйте скористатись даною формою пізніше.'
-        else:
-            self.message = u'Повідомлення успішно надіслано.'
-            
+            messages.error(self.request, u'Під час відправки листа виникла непередбачувана помилка. Спробуйте скористатись даною формою пізніше.')
         return super(ContactView, self).form_valid(form)
         
     def get_success_url(self):
-        return u'%s?status_message=%s' % (reverse('contact_admin'), self.message)
+        return reverse('contact_admin')

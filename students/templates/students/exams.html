@@ -8,6 +8,8 @@
 
 {% block content %}
 
+<a href="{% url "exams_add" %}" class="btn btn-primary">Додати Іспит</a>
+
 <!-- Start Listing -->
 {% if exams %}
 <table class="table table-hover table-striped">
@@ -16,24 +18,10 @@
     <tr>
       <th>#</th>
       <th>
-        <a href="{% url "exams" %}?order_by=title{% if order_by == 'title' and reverse != '1' %}&amp;reverse=1{% endif %}">
-          Назва предмету
-          {% if order_by == 'title' and reverse != '1' %}&uarr;
-          {% elif order_by == 'title' and reverse == '1' %}&darr;{% endif %}
-        </a>
-      </th>
-      <th>
         <a href="{% url "exams" %}?order_by=date{% if order_by == 'date' and reverse != '1' %}&amp;reverse=1{% endif %}">
           Дата і час проведення
           {% if order_by == 'date' and reverse != '1' %}&uarr;
           {% elif order_by == 'date' and reverse == '1' %}&darr;{% endif %}
-        </a>
-      </th>
-      <th>
-        <a href="{% url "exams" %}?order_by=teacher{% if order_by == 'teacher' and reverse != '1' %}&amp;reverse=1{% endif %}">
-          Ім'я викладача
-          {% if order_by == 'teacher' and reverse != '1' %}&uarr;
-          {% elif order_by == 'teacher' and reverse == '1' %}&darr;{% endif %}
         </a>
       </th>
       <th>
@@ -43,6 +31,21 @@
           {% elif order_by == 'exam_group' and reverse == '1' %}&darr;{% endif %}
         </a>
       </th>
+      <th>
+        <a href="{% url "exams" %}?order_by=title{% if order_by == 'title' and reverse != '1' %}&amp;reverse=1{% endif %}">
+          Назва предмету
+          {% if order_by == 'title' and reverse != '1' %}&uarr;
+          {% elif order_by == 'title' and reverse == '1' %}&darr;{% endif %}
+        </a>
+      </th>
+      <th>
+        <a href="{% url "exams" %}?order_by=teacher{% if order_by == 'teacher' and reverse != '1' %}&amp;reverse=1{% endif %}">
+          Ім'я викладача
+          {% if order_by == 'teacher' and reverse != '1' %}&uarr;
+          {% elif order_by == 'teacher' and reverse == '1' %}&darr;{% endif %}
+        </a>
+      </th>
+      <th>Дії</th>
     </tr>
   </thead>
   {% endwith %}
@@ -50,10 +53,21 @@
     {% for exam in exams %}
     <tr>
       <td>{{ forloop.counter0|add:exams.start_index }}</td>
-      <td>{{ exam.title }}</td>
       <td>{{ exam.date }}</td>
-      <td>{{ exam.teacher }}</td>
       <td><a title="Редагувати" href="{% url "groups_edit" exam.exam_group.id %}">{{ exam.exam_group.title }}</a></td>
+      <td>{{ exam.title }}</td>
+      <td>{{ exam.teacher }}</td>
+      <td>
+        <div class="dropdown">
+          <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">Дія
+            <span class="caret"></span>
+          </button>
+          <ul class="dropdown-menu" role="menu">
+            <li> <a href="{% url "exams_edit" exam.id %}">Редагувати</a> </li>
+            <li> <a href="{% url "exams_delete" exam.id %}">Видалити</a> </li>
+          </ul>
+        </div>
+      </td>
     </tr>
     {% endfor %}
           

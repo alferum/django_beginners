@@ -49,16 +49,10 @@ class StudentUpdateForm(StudentCreateForm):
     def __init__(self, *args, **kwargs):
         super(StudentUpdateForm, self).__init__(*args, **kwargs)
         self.helper.form_action = reverse('students_edit', kwargs = {'pk': kwargs['instance'].id})
-
-class StudentCreateView(CreateView):
-    model = Student
-    template_name = 'students/students_edit.html'
-    form_class = StudentCreateForm
-    
-    def get_success_url(self):
-        messages.info(self.request, u'Студента %s %s успішно додано!' % (self.request.POST.get('first_name'), self.request.POST.get('last_name')))
-        return reverse('home')
-        
+        group = self.instance.student_group
+        if group and group.leader == self.instance:
+            # filter groups for field if current student is leader current group
+            self.fields['student_group'].queryset = Group.objects.filter(leader=self.instance)
 
 class StudentUpdateView(UpdateView):
     model = Student
@@ -66,8 +60,7 @@ class StudentUpdateView(UpdateView):
     form_class = StudentUpdateForm
     
     def get_success_url(self):
-        return u'%s?status_message=Студента %s %s успішно збережено!' % (reverse('home'),
-            self.request.POST.get('first_name'), self.request.POST.get('last_name'))
+        return u'%s?status_message=Студента %s %s успішно збережено!' % (reverse('home'), self.object.first_name, self.object.last_name)
         
     def post(self, request, *args, **kwargs):
         if request.POST.get('cancel_button'):
@@ -75,6 +68,25 @@ class StudentUpdateView(UpdateView):
         else:
             return super(StudentUpdateView, self).post(request, *args, **kwargs)
 
+    def form_valid(self, form):
+        """Check if student is leader in any group. If yes, then ensure it's the same as selected group."""
+        # get group where current student is a leader
+        group = Group.objects.get(leader=self.object.id)
+        if group and form.cleaned_data['student_group'] != group:
+            messages.error(self.request, u'Студент є старостою групи %s.' % group.title)
+            return super(StudentUpdateView, self).form_invalid(form)
+        else:
+            return super(StudentUpdateView, self).form_valid(form)
+
+class StudentCreateView(CreateView):
+    model = Student
+    template_name = 'students/students_edit.html'
+    form_class = StudentCreateForm
+    
+    def get_success_url(self):
+        messages.info(self.request, u'Студента %s %s успішно додано!' % (self.object.first_name, self.object.last_name))
+        return reverse('home')
+        
 class StudentDeleteView(DeleteView):
     model = Student
     template_name = 'students/students_confirm_delete.html'
