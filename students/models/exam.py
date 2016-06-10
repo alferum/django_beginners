@@ -11,7 +11,7 @@ class Exam(models.Model):
         unique_together = (('title', 'exam_group'), ('date', 'teacher'), ('date', 'exam_group'))
         
     title = models.CharField(
-        max_length=256,
+        max_length=128,
         blank=False,
         verbose_name=u"Назва предмету")
         
@@ -21,7 +21,7 @@ class Exam(models.Model):
         null=True)
         
     teacher = models.CharField(
-        max_length=256,
+        max_length=128,
         blank=False,
         verbose_name=u"Ім'я викладача")
         

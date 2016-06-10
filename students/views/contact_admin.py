@@ -7,7 +7,8 @@ from django.contrib import messages
 from django.views.generic.edit import FormView
 
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Submit
+from crispy_forms.layout import Submit, Div, HTML, Field
+from crispy_forms.bootstrap import FormActions
 
 from studentsdb.settings import ADMIN_EMAIL
 
@@ -18,7 +19,7 @@ class ContactForm(forms.Form):
         super(ContactForm, self).__init__(*args, **kwargs)
         
         # this helper object allows us to customize form
-        self.helper = FormHelper()
+        self.helper = FormHelper(self)
         
         # form tag attributes
         self.helper.form_class = 'form-horizontal'
@@ -33,7 +34,12 @@ class ContactForm(forms.Form):
         
         # form buttons
         self.helper.add_input(Submit('send_button', u'Надіслати'))
-        
+        #self.helper.layout.append(FormActions(
+        #    HTML('<div class="form-group"><label class="col-sm-2 control-label"></label><div class="controls col-sm-10">'),
+        #    Submit('send_button', u"Надіслати"),
+        #    HTML('</div></div>'),
+        #    ))
+
     from_email = forms.EmailField(
         label=u"Ваша Емейл Адреса")
         

@@ -13,6 +13,7 @@ from crispy_forms.layout import Submit, Div, HTML
 from crispy_forms.bootstrap import FormActions
 
 from ..models.groups import Group
+from ..util import paginate
 
 
 class GroupCreateForm(ModelForm):
@@ -102,15 +103,5 @@ def groups_list(request):
         if request.GET.get('reverse', '') == '1':
             groups = groups.reverse()
     
-    paginator = Paginator(groups, 3)
-    page = request.GET.get('page')
-    try:
-        groups = paginator.page(page)
-    except PageNotAnInteger:
-        # If page is not an integer, deliver first page.
-        groups = paginator.page(1)
-    except EmptyPage:
-        # If page is out of range (e.g. 9999), deliver last page of results.
-        groups = paginator.page(paginator.num_pages)
-    
-    return render(request, 'students/groups_list.html', {'groups': groups})
+    context = paginate(groups, 3, request, {}, var_name='groups')
+    return render(request, 'students/groups_list.html', context)

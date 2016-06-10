@@ -44,12 +44,23 @@ input[type="checkbox"]:checked {
   background-image: repeating-linear-gradient(to bottom,#fff 0%,#87CEFF 50%,#fff 100%);
 }
 
-.footer-edit {
-  padding-top: 20px;
-  background-color: #eee;
-}
-
 /* Form Styles */
 textarea, select, input {
   max-width: 300px;
+}
+
+/* Journal Table Styles */
+td.day-box,
+th.day-header {
+  padding: 4px !important;
+  vertical-align: middle !important;
+  text-align: center;
+}
+
+#ajax-progress-indicator {
+  display: none;
+}
+
+.input-group-addon {
+  width: 13%;
 }

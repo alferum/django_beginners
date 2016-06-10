@@ -21,6 +21,7 @@ from students.views.students import StudentUpdateView, StudentDeleteView, Studen
 from students.views.groups import GroupCreateView, GroupUpdateView, GroupDeleteView
 from students.views.exams import ExamCreateView, ExamUpdateView, ExamDeleteView
 from students.views.contact_admin import ContactView
+from students.views.journal import JournalView
 
 urlpatterns = [
     # Students urls
@@ -36,7 +37,7 @@ urlpatterns = [
     url(r'^groups/(?P<pk>\d+)/delete/$', GroupDeleteView.as_view(), name='groups_delete'),
     
     # Journal urls
-    url(r'^journal/$', 'students.views.journal.journal', name='journal'),
+    url(r'^journal/(?P<pk>\d+)?/?$', JournalView.as_view(), name='journal'),
     url(r'^journal/(?P<sid>\d+)/edit/$', 'students.views.journal.journal_edit', name='journal_edit'),
     
     # Exam urls

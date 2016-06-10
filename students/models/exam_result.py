@@ -24,7 +24,8 @@ class Exam_result(models.Model):
         verbose_name=u"Оцінка")
         
     def __unicode__(self):
-        return u"%s %s %s" % (self.student_name, self.forexam.title, self.evaluation)
+        #return u"%s %s %s" % (self.student_name, self.forexam.title, self.evaluation)
+        return u"%s %s %s" % (self.student_name, self.forexam.title, self.forexam.id)
 
 #foo = models.ForeignKey('Exam', to_field='exam_group')
 #foo2 = models.ForeignKey('Student', to_field='student_group')

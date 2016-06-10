@@ -9,10 +9,11 @@ from django.forms import ModelForm
 from django.views.generic import CreateView, UpdateView, DeleteView
 
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Submit, Div, HTML
-from crispy_forms.bootstrap import FormActions
+from crispy_forms.layout import Submit, HTML, Div
+from crispy_forms.bootstrap import FormActions, AppendedText
 
 from ..models.exam import Exam
+from ..util import paginate, get_current_group
 
 class ExamCreateForm(ModelForm):
     class Meta:
@@ -34,12 +35,14 @@ class ExamCreateForm(ModelForm):
         self.helper.label_class = 'col-sm-2 control-label'
         self.helper.field_class = 'col-sm-10'
         
+        self.helper['date'].wrap(AppendedText, '<i class="glyphicon glyphicon-calendar"></i>')
+        
         # add buttons
-        self.helper.layout.append(FormActions(
-            Div(css_class = self.helper.label_class),
-            Submit('add_button', u'Зберегти', css_class="btn btn-primary"),
-            HTML(u"<a class='btn btn-link' name='cancel_button' href='{% url 'exams' %}?status_message=Додавання/редагування іспиту скасовано!'>Скасувати</a>"),
-        ))
+        self.helper.layout.append(HTML(
+            u'<div class="form-group"><label class="col-sm-2 control-label"></label><div class="controls col-sm-10">\
+            <input class="btn btn-primary" type="submit" value="Зберегти" name="add_button" />\
+            <a class="btn btn-link" name="cancel_button" href="{% url "exams" %}?status_message=Додавання/редагування іспиту скасовано!">Скасувати</a>\
+            </div></div>'))
 
 class ExamUpdateForm(ExamCreateForm):
 
@@ -74,22 +77,17 @@ class ExamDeleteView(DeleteView):
         return reverse('exams')
 
 def exams_list(request):
-    exams = Exam.objects.all()
+    current_group = get_current_group(request)
+    if current_group:
+        exams = Exam.objects.filter(exam_group=current_group)
+    else:
+        exams = Exam.objects.all()
+    
     order_by = request.GET.get('order_by', '')
     if order_by in ('title', 'date', 'teacher', 'exam_group'):
         exams = exams.order_by(order_by)
         if request.GET.get('reverse', '') == '1':
             exams = exams.reverse()
     
-    paginator = Paginator(exams, 3)
-    page = request.GET.get('page')
-    try:
-        exams = paginator.page(page)
-    except PageNotAnInteger:
-        # If page is not an integer, deliver first page.
-        exams = paginator.page(1)
-    except EmptyPage:
-        # If page is out of range (e.g. 9999), deliver last page of results.
-        exams = paginator.page(paginator.num_pages)
-    
-    return render(request, 'students/exams.html', {'exams': exams})
+    context = paginate(exams, 3, request, {}, var_name='exams')
+    return render(request, 'students/exams.html', context)

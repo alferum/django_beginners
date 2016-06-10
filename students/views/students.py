@@ -11,11 +11,13 @@ from django.forms import ModelForm
 from django.views.generic import UpdateView, DeleteView, CreateView
 
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Submit, Div, HTML
-from crispy_forms.bootstrap import FormActions
+from crispy_forms.layout import Submit, Div, HTML #, Layout, Field, Fieldset
+from crispy_forms.bootstrap import FormActions, AppendedText
 
 from ..models.students import Student
 from ..models.groups import Group
+from ..util import paginate, get_current_group
+
 
 class StudentCreateForm(ModelForm):
     class Meta:
@@ -34,15 +36,24 @@ class StudentCreateForm(ModelForm):
         # set form field properties
         self.helper.help_text_inline = True
         self.helper.html5_required = True
-        self.helper.label_class = 'col-sm-2 control-label'
+        self.helper.label_class = 'col-sm-2'
         self.helper.field_class = 'col-sm-10'
         
+        self.helper['birthday'].wrap(AppendedText, '<i class="glyphicon glyphicon-calendar"></i>')
+        #self.helper.layout[3] = AppendedText('birthday', '<i class="glyphicon glyphicon-calendar"></i>')
+        
         # add buttons
-        self.helper.layout.append(FormActions(
-            Div(css_class = self.helper.label_class),
-            Submit('add_button', u'Зберегти', css_class="btn btn-primary"),
-            HTML(u"<a class='btn btn-link' name='cancel_button' href='{% url 'home' %}?status_message=Додавання/редагування студента скасовано!'>Скасувати</a>"),
-        ))
+        self.helper.layout.append(HTML(
+            u'<div class="form-group"><label class="col-sm-2 control-label"></label><div class="controls col-sm-10">\
+            <input class="btn btn-primary" type="submit" value="Зберегти" name="add_button">\
+            <a class="btn btn-link" href="/?status_message=Додавання/редагування студента скасовано!" name="cancel_button">Скасувати</a></div></div>'))
+
+        #self.helper.layout.append(Div(
+        #    Div(css_class = self.helper.label_class),
+        #    Div(Submit('add_button', u'Зберегти'),
+        #        HTML(u"<a class='btn btn-link' name='cancel_button' href='{% url 'home' %}?status_message=Додавання/редагування студента скасовано!'>Скасувати</a>"),
+        #        css_class = 'controls col-sm-10'),
+        #    css_class = 'form-group'))
 
 class StudentUpdateForm(StudentCreateForm):
 
@@ -71,7 +82,8 @@ class StudentUpdateView(UpdateView):
     def form_valid(self, form):
         """Check if student is leader in any group. If yes, then ensure it's the same as selected group."""
         # get group where current student is a leader
-        group = Group.objects.get(leader=self.object.id)
+        group = Group.objects.filter(leader=self.object.id)
+        group = None
         if group and form.cleaned_data['student_group'] != group:
             messages.error(self.request, u'Студент є старостою групи %s.' % group.title)
             return super(StudentUpdateView, self).form_invalid(form)
@@ -95,7 +107,13 @@ class StudentDeleteView(DeleteView):
         return u'%s?status_message=Студента успішно видалено!' % reverse('home')
 
 def students_list(request):
-    students = Student.objects.all()
+    # check if we need to show only one group of students
+    current_group = get_current_group(request)
+    if current_group:
+        students = Student.objects.filter(student_group=current_group)
+    else:
+        # otherwise show all students
+        students = Student.objects.all()
     
     # try to order students list
     #order_by = request.GET.get('order_by', 'last_name') # default sorted by last_name
@@ -105,19 +123,9 @@ def students_list(request):
         if request.GET.get('reverse', '') == '1':
             students = students.reverse()
     
-    # paginate students
-    paginator = Paginator(students, 3)
-    page = request.GET.get('page')
-    try:
-        students = paginator.page(page)
-    except PageNotAnInteger:
-        # If page is not an integer, deliver first page.
-        students = paginator.page(1)
-    except EmptyPage:
-        # If page is out of range (e.g. 9999), deliver last page of results.
-        students = paginator.page(paginator.num_pages)
-
-    return render(request, 'students/students_list.html', {'students': students})
+    # apply pagination, 3 students per page
+    context = paginate(students, 3, request, {}, var_name='students')
+    return render(request, 'students/students_list.html', context)
 
 def students_add(request):
     # was form posted?
